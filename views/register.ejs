@@ -1,0 +1,49 @@
+<%- include("partials/head") %>
+
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card shadow-sm border-0 w-100" style="max-width: 460px;">
+    <div class="card-body p-4">
+      <div class="text-center mb-3">
+        <img src="/img/logo.png" alt="TDN Logo" style="height: 64px; width: auto;" class="mb-2" />
+        <h1 class="h4 mb-1">Driver Jobs</h1>
+        <p class="text-muted mb-0">
+          Create an account to save your profile and view available trucking jobs.
+        </p>
+      </div>
+
+      <%- include("partials/alerts") %>
+
+      <form method="POST" action="/sessions/register" class="mt-4">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input name="name" value="<%= form?.name || '' %>" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input name="email" value="<%= form?.email || '' %>" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control" name="password" type="password" autocomplete="new-password" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Confirm Password</label>
+          <input class="form-control" name="password1" type="password" autocomplete="new-password" required />
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Register</button>
+
+        <div class="text-center mt-3">
+          <span class="text-muted">Already have an account?</span>
+          <a href="/sessions/logon" class="ms-1">Log In</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

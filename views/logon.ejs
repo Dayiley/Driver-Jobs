@@ -1,0 +1,38 @@
+<%- include("partials/head") %>
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="card shadow-sm border-0 w-100" style="max-width: 460px;">
+    <div class="card-body p-4">
+      <div class="text-center mb-3">
+        <img src="/img/logo.png" alt="TDN Logo" style="height: 64px; width: auto;" class="mb-2" />
+        <h1 class="h4 mb-1">Driver Jobs</h1>
+        <p class="text-muted mb-0">
+          Looking for work in the trucking industry? Browse available openings and apply in minutes.
+        </p>
+      </div>
+      
+      <%- include("partials/alerts") %>
+
+      <form method="POST" action="/sessions/logon" class="mt-4">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input class="form-control" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control" name="password" type="password" autocomplete="current-password" required />
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Log In</button>
+
+        <div class="text-center mt-3">
+          <span class="text-muted">Don’t have an account yet?</span>
+          <a href="/sessions/register" class="ms-1">Register</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

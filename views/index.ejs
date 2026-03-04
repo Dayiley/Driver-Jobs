@@ -1,0 +1,15 @@
+<%- include("partials/head.ejs") %>
+<%- include("partials/header.ejs") %>
+
+<% if (user) { %>
+  <div class="d-flex flex-column gap-2">
+    <a class="btn btn-outline-primary" href="/profiles">Go to My Profiles</a>
+  </div>
+<% } else { %>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary" href="/sessions/logon">Logon</a>
+    <a class="btn btn-outline-primary" href="/sessions/register">Register</a>
+  </div>
+<% } %>
+
+<%- include("partials/footer.ejs") %>

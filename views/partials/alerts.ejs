@@ -1,0 +1,11 @@
+<% if (errors && errors.length) { %>
+    <% errors.forEach((err) => { %>
+      <div class="alert alert-danger py-2 mb-2"><%= err %></div>
+    <% }) %>
+  <% } %>
+  
+  <% if (info && info.length) { %>
+    <% info.forEach((msg) => { %>
+      <div class="alert alert-success py-2 mb-2"><%= msg %></div>
+    <% }) %>
+  <% } %>

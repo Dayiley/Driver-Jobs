@@ -1,0 +1,37 @@
+<h1 class="h3">Trucker Profiles</h1>
+
+<% if (user) { %>
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <p class="mb-0">
+      Logged in as 
+      <strong><%= user.name %></strong>
+    
+      <% if (user.role === "admin") { %>
+        <span class="badge bg-dark ms-2">Admin</span>
+      <% } %>
+    </p>
+
+    <form method="POST" action="/sessions/logoff">
+      <button class="btn btn-outline-danger btn-sm" type="submit">Logoff</button>
+    </form>
+  </div>
+
+  <div class="d-flex gap-2 mb-3">
+    <a class="btn btn-outline-primary btn-sm" href="/profiles">My Profiles</a>
+    <a class="btn btn-outline-dark btn-sm" href="/jobs">Jobs</a>
+  
+    <% if (user.role === "admin") { %>
+      <a class="btn btn-dark btn-sm" href="/jobs/new">Add Job</a>
+    <% } %>
+  </div>
+<% } %>
+
+<% if (errors && errors.length) { errors.forEach((err) => { %>
+  <div class="alert alert-danger py-2"><%= err %></div>
+<% }) } %>
+
+<% if (info && info.length) { info.forEach((msg) => { %>
+  <div class="alert alert-success py-2"><%= msg %></div>
+<% }) } %>
+
+<hr />

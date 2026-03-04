@@ -1,0 +1,46 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/header.ejs") %>
+
+<% const isEdit = mode === "edit"; %>
+
+<h2 class="h4 mb-3"><%= isEdit ? "Edit Profile" : "Create Profile" %></h2>
+
+<form method="POST" action="<%= isEdit ? `/profiles/${profile._id}/update` : '/profiles' %>">
+  <div class="mb-3">
+    <label class="form-label">Full Name</label>
+    <input class="form-control" name="fullName" value="<%= profile.fullName || '' %>" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Position Type</label>
+    <select class="form-select" name="positionType">
+      <option value="driver" <%= profile.positionType === 'driver' ? 'selected' : '' %>>driver</option>
+      <option value="dispatcher" <%= profile.positionType === 'dispatcher' ? 'selected' : '' %>>dispatcher</option>
+      <option value="mechanic" <%= profile.positionType === 'mechanic' ? 'selected' : '' %>>mechanic</option>
+      <option value="other" <%= profile.positionType === 'other' ? 'selected' : '' %>>other</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Years Experience</label>
+    <input class="form-control" type="number" name="yearsExperience" min="0"
+      value="<%= profile.yearsExperience ?? 0 %>" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">State (2 letters)</label>
+    <input class="form-control" name="state" maxlength="2" value="<%= profile.state || '' %>" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Available From</label>
+    <input class="form-control" type="date" name="availableFrom" value="<%= profile.availableFrom || '' %>" />
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit"><%= isEdit ? "Update" : "Create" %></button>
+    <a class="btn btn-secondary" href="/profiles">Cancel</a>
+  </div>
+</form>
+
+<%- include("../partials/footer.ejs") %>

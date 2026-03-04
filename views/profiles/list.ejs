@@ -1,0 +1,61 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/header.ejs") %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">
+    <%= user && user.role === "admin" ? "All Profiles" : "My Profiles" %>
+  </h2>
+
+  <% if (user && user.role !== "admin") { %>
+    <a class="btn btn-primary btn-sm" href="/profiles/new">New Profile</a>
+  <% } %>
+</div>
+
+<% if (!profiles || profiles.length === 0) { %>
+  <div class="alert alert-secondary">No profiles yet.</div>
+<% } else { %>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Position</th>
+          <th>Years</th>
+          <th>State</th>
+          <th>Available From</th>
+
+          <% if (user && user.role !== "admin") { %>
+            <th></th>
+          <% } %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% profiles.forEach((p) => { %>
+          <tr>
+            <td><%= p.fullName %></td>
+            <td><%= p.positionType %></td>
+            <td><%= p.yearsExperience %></td>
+            <td><%= p.state %></td>
+            <td><%= new Date(p.availableFrom).toISOString().slice(0,10) %></td>
+
+            <% if (user && user.role !== "admin") { %>
+              <td class="text-end">
+                <a class="btn btn-outline-primary btn-sm" href="/profiles/<%= p._id %>/edit">Edit</a>
+
+                <form method="POST" action="/profiles/<%= p._id %>/delete" class="d-inline">
+                  <button class="btn btn-outline-danger btn-sm" type="submit"
+                    onclick="return confirm('Delete this profile?');">
+                    Delete
+                  </button>
+                </form>
+              </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include("../partials/footer.ejs") %>

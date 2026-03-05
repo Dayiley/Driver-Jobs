@@ -4,6 +4,10 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+const cookieParser = require("cookie-parser");
+const { csrf } = require("host-csrf");
+
+
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const auth = require("./middleware/auth");
@@ -15,11 +19,45 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const passportInit = require("./passport/passportInit");
 
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+
 const connectDB = require("./db/connect");
 
 // EJS + form parsing
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+
+//extra security
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        imgSrc: ["'self'", "data:", "https:"],
+        fontSrc: ["'self'", "https:", "data:"],
+        connectSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      },
+    },
+  })
+);
+app.use(xss());
+
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 min
+    max: 200, // ajusta si quieres
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
+
+// cookies 
+app.use(cookieParser(process.env.SESSION_SECRET));
+
 
 // Mongo session store
 const store = new MongoDBStore({
@@ -55,10 +93,19 @@ app.use(passport.session());
 // 3) Flash
 app.use(flash());
 
+app.use(
+  csrf({
+    cookie: { sameSite: "strict" },
+  })
+);
+
+
 // 4) storeLocals
 app.use(require("./middleware/storeLocals"));
 app.use(express.static("public"));
 
+
+//user debugger
 app.get("/debug-user", (req, res) => {
   res.json({
     hasUser: !!req.user,
@@ -66,6 +113,7 @@ app.get("/debug-user", (req, res) => {
     session: req.session,
   });
 });
+
 
 // 5) Routes
 app.get("/", (req, res) => {
@@ -77,9 +125,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/sessions", require("./routes/sessionRoutes.js"));
-
 app.use("/profiles", auth, require("./routes/profileRoutes"));
-
 app.use("/jobs", auth, jobsRouter);
 
 // 404 + error

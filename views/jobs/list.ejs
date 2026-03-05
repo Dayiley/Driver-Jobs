@@ -43,6 +43,8 @@
               <div class="mt-3 d-flex gap-2">
                 <a class="btn btn-sm btn-outline-dark" href="/jobs/<%= job._id %>/edit">Edit</a>
                 <form method="POST" action="/jobs/<%= job._id %>/delete" class="m-0">
+
+                  <input type="hidden" name="_csrf" value="<%= _csrf %>">
                   <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                 </form>
               </div>

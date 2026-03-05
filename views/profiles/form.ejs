@@ -6,6 +6,7 @@
 <h2 class="h4 mb-3"><%= isEdit ? "Edit Profile" : "Create Profile" %></h2>
 
 <form method="POST" action="<%= isEdit ? `/profiles/${profile._id}/update` : '/profiles' %>">
+  <input type="hidden" name="_csrf" value="<%= _csrf %>">
   <div class="mb-3">
     <label class="form-label">Full Name</label>
     <input class="form-control" name="fullName" value="<%= profile.fullName || '' %>" />

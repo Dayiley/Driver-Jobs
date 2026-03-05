@@ -15,6 +15,7 @@
       <%- include("partials/alerts") %>
 
       <form method="POST" action="/sessions/register" class="mt-4">
+        <input type="hidden" name="_csrf" value="<%= _csrf %>">
         <div class="mb-3">
           <label class="form-label">Name</label>
           <input name="name" value="<%= form?.name || '' %>" class="form-control" />

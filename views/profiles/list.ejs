@@ -44,6 +44,7 @@
                 <a class="btn btn-outline-primary btn-sm" href="/profiles/<%= p._id %>/edit">Edit</a>
 
                 <form method="POST" action="/profiles/<%= p._id %>/delete" class="d-inline">
+                  <input type="hidden" name="_csrf" value="<%= _csrf %>">
                   <button class="btn btn-outline-danger btn-sm" type="submit"
                     onclick="return confirm('Delete this profile?');">
                     Delete

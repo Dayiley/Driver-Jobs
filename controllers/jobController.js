@@ -3,8 +3,24 @@ const parseValidationErrors = require("../utils/parseValidationErrors");
 
 const listJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
-    res.render("jobs/list", { jobs });
+    const q = (req.query.q || "").trim();
+
+    const filter = {};
+
+    if (q) {
+      filter.$or = [
+        { companyName: { $regex: q, $options: "i" } },
+        { positionTitle: { $regex: q, $options: "i" } },
+      ];
+    }
+
+    const jobs = await Job.find(filter).sort({ createdAt: -1 });
+
+    res.render("jobs/list", {
+      jobs,
+      q,
+    });
+
   } catch (e) {
     next(e);
   }

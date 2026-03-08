@@ -1,0 +1,39 @@
+
+body {
+    background-color: #f6f8fb;
+  }
+  
+  .navbar {
+  }
+  
+  .dashboard-hero {
+    background: white;
+    padding: 3rem 2rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .search-bar-wrap {
+    max-width: 720px;
+  }
+  
+  .search-bar {
+    background: white;
+    border: 1px solid #dfe3e8;
+    border-radius: 999px;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .search-bar .form-control {
+    background: transparent;
+    font-size: 0.95rem;
+  }
+  
+  .search-bar .form-control:focus {
+    box-shadow: none;
+  }
+  
+  .search-icon {
+    font-size: 0.95rem;
+    color: #6c757d;
+  }

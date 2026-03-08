@@ -1,7 +1,51 @@
 <%- include("../partials/head") %>
 <%- include("../partials/header") %>
 
+<section class="py-5 mb-4 border-bottom">
+  <div class="px-4">
+
+    <h2 class="fw-semibold mb-2">
+      Welcome <%= user.name %> 👋
+    </h2>
+    
+    <p class="text-muted">
+      <% if (user.role === "admin") { %>
+        Manage job listings and review driver profiles.
+      <% } else { %>
+        Browse available jobs and manage your driver profile.
+      <% } %>
+
+    <p class="text-muted mb-3" style="max-width: 700px;">
+      Driver Jobs helps you explore opportunities in the trucking industry
+      and manage your professional profile in one place.
+    </p>
+
+  </div>
+</section>
+
 <h2 class="h4 mb-3">Available Jobs</h2>
+
+<form method="GET" action="/jobs" class="search-bar-wrap mb-4">
+  <div class="search-bar d-flex align-items-center">
+    <span class="search-icon me-2">🔎</span>
+
+    <input
+      type="text"
+      name="q"
+      class="form-control border-0 shadow-none me-2"
+      placeholder="Search jobs by company or position"
+      value="<%= q || '' %>"
+    />
+
+    <button class="btn btn-primary px-4 rounded-pill" type="submit">Search</button>
+  </div>
+
+  <% if (q) { %>
+    <div class="mt-2">
+      <a href="/jobs" class="small text-decoration-none">Clear search</a>
+    </div>
+  <% } %>
+</form>
 
 <% if (!jobs || jobs.length === 0) { %>
   <div class="alert alert-secondary">No jobs yet.</div>

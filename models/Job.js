@@ -14,6 +14,12 @@ const JobSchema = new mongoose.Schema(
       trim: true,
       maxlength: 80,
     },
+    hiringArea: {
+      type: String,
+      required: [true, "Please provide a hiring area"],
+      trim: true,
+      maxlength: 100,
+    },
     detailsUrl: {
       type: String,
       trim: true,

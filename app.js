@@ -127,6 +127,7 @@ app.get("/", (req, res) => {
 app.use("/sessions", require("./routes/sessionRoutes.js"));
 app.use("/profiles", auth, require("./routes/profileRoutes"));
 app.use("/jobs", auth, jobsRouter);
+app.use("/news", auth, require("./routes/newsRoutes"));
 
 // 404 + error
 app.use((req, res) => {

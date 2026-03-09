@@ -1,0 +1,77 @@
+<%- include("../partials/head") %>
+<%- include("../partials/header") %>
+
+<div class="container py-4">
+
+
+<div class="mb-4">
+  <h2 class="h4 mb-1">Truck Driver News</h2>
+  <p class="text-muted small mb-0">
+    Latest articles from our website.
+  </p>
+</div>
+
+<div class="row g-4">
+
+  <% if (!posts || posts.length === 0) { %>
+
+    <div class="col-12">
+      <div class="alert alert-secondary">
+        No news available.
+      </div>
+    </div>
+
+  <% } else { %>
+
+    <% posts.forEach((post) => { %>
+
+      <% const image = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url; %>
+
+      <div class="col-12 col-md-6 col-lg-4">
+
+        <a
+          href="<%= post.link %>"
+          target="_blank"
+          rel="noopener"
+          class="news-card text-decoration-none d-block"
+        >
+
+          <div class="news-image-wrap">
+
+            <% if (image) { %>
+
+              <img
+                src="<%= image %>"
+                alt="<%= post.title.rendered %>"
+                class="news-image"
+              />
+
+            <% } else { %>
+
+              <div class="news-image news-image-placeholder"></div>
+
+            <% } %>
+
+            <div class="news-overlay"></div>
+
+            <div class="news-content">
+              <h5 class="news-title mb-0">
+                <%- post.title.rendered %>
+              </h5>
+            </div>
+
+          </div>
+
+        </a>
+
+      </div>
+
+    <% }) %>
+
+  <% } %>
+
+</div>
+
+</div>
+
+<%- include("../partials/footer") %>

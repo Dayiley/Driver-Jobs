@@ -1,6 +1,9 @@
 <%- include("../partials/head.ejs") %>
 <%- include("../partials/header.ejs") %>
 
+<div class="container py-4">
+
+
 <% const isEdit = mode === "edit"; %>
 
 <h2 class="h4 mb-3"><%= isEdit ? "Edit Profile" : "Create Profile" %></h2>
@@ -43,5 +46,7 @@
     <a class="btn btn-secondary" href="/profiles">Cancel</a>
   </div>
 </form>
+
+</div>
 
 <%- include("../partials/footer.ejs") %>

@@ -1,60 +1,64 @@
 <%- include("../partials/head.ejs") %>
 <%- include("../partials/header.ejs") %>
 
-<div class="card mx-auto" style="max-width: 520px;">
-  <div class="card-body">
-    <h2 class="h5 mb-3"><%= mode === "edit" ? "Edit Job" : "Create Job" %></h2>
+<div class="container py-4">
+  <div class="card mx-auto" style="max-width: 520px;">
+    <div class="card-body">
+      <h2 class="h5 mb-3"><%= mode === "edit" ? "Edit Job" : "Create Job" %></h2>
 
-    <form
-      method="POST"
-      action="<%= mode === 'edit' ? `/jobs/${job._id}/update` : '/jobs' %>"
-      enctype="multipart/form-data"
-    >
-    <input type="hidden" name="_csrf" value="<%= _csrf %>">
-    
-      <div class="mb-2">
-        <label class="form-label">Company Name</label>
-        <input class="form-control" name="companyName" value="<%= job.companyName || '' %>" required />
-      </div>
+      <form
+        method="POST"
+        action="<%= mode === 'edit' ? `/jobs/${job._id}/update` : '/jobs' %>"
+      >
+        <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
-      <div class="mb-2">
-        <label class="form-label">Position Title</label>
-        <input class="form-control" name="positionTitle" value="<%= job.positionTitle || '' %>" required />
-      </div>
-
-      <div class="mb-2">
-        <label class="form-label">Details URL</label>
-        <input class="form-control" name="detailsUrl" value="<%= job.detailsUrl || '' %>" />
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Company Image URL (optional)</label>
-        <input class="form-control" name="imageUrl" value="<%= job.imageUrl || '' %>" placeholder="https://..." />
-        <div class="form-text">Use this OR upload a WEBP below.</div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Upload Company Image (WEBP, optional)</label>
-        <input class="form-control" type="file" name="image" accept="image/webp" />
-        <div class="form-text">If you upload a file, it will be used.</div>
-      </div>
-
-      <% if (mode === "edit") { %>
-        <div class="mb-3">
-          <div class="small text-muted mb-1">Current image:</div>
-          <% if (job.imageFile) { %>
-            <img src="/uploads/<%= job.imageFile %>" class="img-fluid rounded" style="max-height: 160px; object-fit: cover;" />
-          <% } else if (job.imageUrl) { %>
-            <img src="<%= job.imageUrl %>" class="img-fluid rounded" style="max-height: 160px; object-fit: cover;" />
-          <% } else { %>
-            <div class="text-muted">No image set.</div>
-          <% } %>
+        <div class="mb-2">
+          <label class="form-label">Company Name</label>
+          <input class="form-control" name="companyName" value="<%= job.companyName || '' %>" required />
         </div>
-      <% } %>
 
-      <button class="btn btn-primary" type="submit">Save</button>
-      <a class="btn btn-outline-secondary" href="/jobs">Cancel</a>
-    </form>
+        <div class="mb-2">
+          <label class="form-label">Position Title</label>
+          <input class="form-control" name="positionTitle" value="<%= job.positionTitle || '' %>" required />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label">Hiring Area</label>
+          <input
+            class="form-control"
+            name="hiringArea"
+            value="<%= job.hiringArea || '' %>"
+            placeholder="Example: Texas, Southeast, Nationwide"
+            required
+          />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label">Details URL</label>
+          <input class="form-control" name="detailsUrl" value="<%= job.detailsUrl || '' %>" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Company Image URL (optional)</label>
+          <input class="form-control" name="imageUrl" value="<%= job.imageUrl || '' %>" placeholder="https://..." />
+          <div class="form-text">Use an image URL for the company logo or banner.</div>
+        </div>
+
+        <% if (mode === "edit") { %>
+          <div class="mb-3">
+            <div class="small text-muted mb-1">Current image:</div>
+            <% if (job.imageUrl) { %>
+              <img src="<%= job.imageUrl %>" class="img-fluid rounded" style="max-height: 160px; object-fit: cover;" />
+            <% } else { %>
+              <div class="text-muted">No image set.</div>
+            <% } %>
+          </div>
+        <% } %>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a class="btn btn-outline-secondary" href="/jobs">Cancel</a>
+      </form>
+    </div>
   </div>
 </div>
 

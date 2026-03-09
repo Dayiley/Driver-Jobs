@@ -11,6 +11,7 @@ const listJobs = async (req, res, next) => {
       filter.$or = [
         { companyName: { $regex: q, $options: "i" } },
         { positionTitle: { $regex: q, $options: "i" } },
+        { hiringArea: { $regex: q, $options: "i" } },
       ];
     }
 
@@ -20,7 +21,6 @@ const listJobs = async (req, res, next) => {
       jobs,
       q,
     });
-
   } catch (e) {
     next(e);
   }
@@ -35,7 +35,7 @@ const newJobShow = (req, res) => {
 
 const createJob = async (req, res, next) => {
     try {
-      const { companyName, positionTitle, detailsUrl, imageUrl } = req.body;
+      const { companyName, positionTitle,hiringArea, detailsUrl, imageUrl } = req.body;
   
       const trimmedUrl = (imageUrl || "").trim();
   
@@ -51,6 +51,7 @@ const createJob = async (req, res, next) => {
       await Job.create({
         companyName,
         positionTitle,
+        hiringArea,
         detailsUrl,
         imageUrl: trimmedUrl || undefined,
         imageFile: req.file ? req.file.filename : undefined,
@@ -83,10 +84,10 @@ const editJobShow = async (req, res, next) => {
 
 const updateJob = async (req, res, next) => {
   try {
-    const { companyName, positionTitle, detailsUrl, imageUrl } = req.body;
+    const { companyName, positionTitle, hiringArea, detailsUrl, imageUrl } = req.body;
     const trimmedUrl = (imageUrl || "").trim();
 
-    const update = { companyName, positionTitle, detailsUrl };
+    const update = { companyName, positionTitle,hiringArea, detailsUrl };
 
     // Prioridad: si sube archivo, usamos archivo
     if (req.file) {

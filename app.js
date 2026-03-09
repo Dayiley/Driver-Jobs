@@ -93,11 +93,19 @@ app.use(passport.session());
 // 3) Flash
 app.use(flash());
 
-app.use(
-  csrf({
-    cookie: { sameSite: "strict" },
-  })
-);
+const csrfProtection = require("./middleware/csrfProtection");
+
+app.use((req, res, next) => {
+  const isJobUploadPost =
+    req.method === "POST" &&
+    (req.path === "/jobs" || /^\/jobs\/[^/]+\/update$/.test(req.path));
+
+  if (isJobUploadPost) {
+    return next();
+  }
+
+  return csrfProtection(req, res, next);
+});
 
 
 // 4) storeLocals

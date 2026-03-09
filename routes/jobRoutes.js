@@ -14,10 +14,8 @@ const {
   deleteJob,
 } = require("../controllers/jobController");
 
-// todos logueados
 router.get("/", listJobs);
 
-// solo admin
 router.get("/new", adminOnly, newJobShow);
 router.post(
   "/",

@@ -1,4 +1,5 @@
-const NEWS_URL = "https://truckdrivernews.com/wp-json/wp/v2/posts?per_page=12&_embed";
+const NEWS_URL =
+  "https://truckdrivernews.com/wp-json/wp/v2/posts?per_page=12&_embed";
 
 let newsCache = {
   posts: [],

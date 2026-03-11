@@ -65,7 +65,6 @@ const editProfileShow = async (req, res, next) => {
       return res.redirect("/profiles");
     }
 
-    // Para que el input type="date" funcione
     const availableFrom = profile.availableFrom
       ? new Date(profile.availableFrom).toISOString().slice(0, 10)
       : "";

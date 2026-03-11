@@ -34,40 +34,40 @@ const newJobShow = (req, res) => {
 };
 
 const createJob = async (req, res, next) => {
-    try {
-      const { companyName, positionTitle,hiringArea, detailsUrl, imageUrl } = req.body;
-  
-      const trimmedUrl = (imageUrl || "").trim();
-  
-      // Si NO hay archivo y NO hay URL => error
-      if (!req.file && !trimmedUrl) {
-        req.flash("error", "Please provide an image URL or upload a WEBP image.");
-        return res.render("jobs/form", {
-          mode: "create",
-          job: { companyName, positionTitle, detailsUrl, imageUrl: trimmedUrl },
-        });
-      }
-  
-      await Job.create({
-        companyName,
-        positionTitle,
-        hiringArea,
-        detailsUrl,
-        imageUrl: trimmedUrl || undefined,
-        imageFile: req.file ? req.file.filename : undefined,
-        createdBy: req.user._id,
+  try {
+    const { companyName, positionTitle, hiringArea, detailsUrl, imageUrl } =
+      req.body;
+
+    const trimmedUrl = (imageUrl || "").trim();
+
+    if (!req.file && !trimmedUrl) {
+      req.flash("error", "Please provide an image URL or upload a WEBP image.");
+      return res.render("jobs/form", {
+        mode: "create",
+        job: { companyName, positionTitle, detailsUrl, imageUrl: trimmedUrl },
       });
-  
-      req.flash("info", "Job created.");
-      res.redirect("/jobs");
-    } catch (e) {
-      if (e.name === "ValidationError") {
-        parseValidationErrors(e, req);
-        return res.render("jobs/form", { mode: "create", job: req.body });
-      }
-      next(e);
     }
-  };
+
+    await Job.create({
+      companyName,
+      positionTitle,
+      hiringArea,
+      detailsUrl,
+      imageUrl: trimmedUrl || undefined,
+      imageFile: req.file ? req.file.filename : undefined,
+      createdBy: req.user._id,
+    });
+
+    req.flash("info", "Job created.");
+    res.redirect("/jobs");
+  } catch (e) {
+    if (e.name === "ValidationError") {
+      parseValidationErrors(e, req);
+      return res.render("jobs/form", { mode: "create", job: req.body });
+    }
+    next(e);
+  }
+};
 
 const editJobShow = async (req, res, next) => {
   try {
@@ -84,22 +84,19 @@ const editJobShow = async (req, res, next) => {
 
 const updateJob = async (req, res, next) => {
   try {
-    const { companyName, positionTitle, hiringArea, detailsUrl, imageUrl } = req.body;
+    const { companyName, positionTitle, hiringArea, detailsUrl, imageUrl } =
+      req.body;
     const trimmedUrl = (imageUrl || "").trim();
 
-    const update = { companyName, positionTitle,hiringArea, detailsUrl };
+    const update = { companyName, positionTitle, hiringArea, detailsUrl };
 
-    // Prioridad: si sube archivo, usamos archivo
     if (req.file) {
       update.imageFile = req.file.filename;
-      update.imageUrl = undefined; // opcional: limpiar URL si ahora hay archivo
+      update.imageUrl = undefined;
     } else {
-      // si no hay archivo, permitimos URL (o limpiar si viene vacía)
       update.imageUrl = trimmedUrl || undefined;
-      // y NO tocamos imageFile para no perder el anterior
     }
 
-    // Regla: no permitir que quede sin imagen si el job no tenía ninguna
     const existing = await Job.findById(req.params.id);
     if (!existing) {
       req.flash("error", "Job not found.");
@@ -107,7 +104,7 @@ const updateJob = async (req, res, next) => {
     }
 
     const willHaveFile = req.file ? true : !!existing.imageFile;
-    const willHaveUrl = req.file ? false : !!trimmedUrl; // si sube archivo, URL se limpia arriba
+    const willHaveUrl = req.file ? false : !!trimmedUrl;
     if (!willHaveFile && !willHaveUrl) {
       req.flash("error", "Please keep an image URL or upload a WEBP image.");
       return res.render("jobs/form", {

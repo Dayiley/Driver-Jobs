@@ -7,7 +7,6 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const { csrf } = require("host-csrf");
 
-
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const auth = require("./middleware/auth");
@@ -48,16 +47,15 @@ app.use(xss());
 
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 min
-    max: 200, // ajusta si quieres
+    windowMs: 15 * 60 * 1000,
+    max: 200,
     standardHeaders: true,
     legacyHeaders: false,
   })
 );
 
-// cookies 
+// cookies
 app.use(cookieParser(process.env.SESSION_SECRET));
-
 
 // Mongo session store
 const store = new MongoDBStore({
@@ -93,17 +91,23 @@ app.use(passport.session());
 // 3) Flash
 app.use(flash());
 
-app.use(
-  csrf({
-    cookie: { sameSite: "strict" },
-  })
-);
+const csrfProtection = require("./middleware/csrfProtection");
 
+app.use((req, res, next) => {
+  const isJobUploadPost =
+    req.method === "POST" &&
+    (req.path === "/jobs" || /^\/jobs\/[^/]+\/update$/.test(req.path));
+
+  if (isJobUploadPost) {
+    return next();
+  }
+
+  return csrfProtection(req, res, next);
+});
 
 // 4) storeLocals
 app.use(require("./middleware/storeLocals"));
 app.use(express.static("public"));
-
 
 //user debugger
 app.get("/debug-user", (req, res) => {
@@ -113,7 +117,6 @@ app.get("/debug-user", (req, res) => {
     session: req.session,
   });
 });
-
 
 // 5) Routes
 app.get("/", (req, res) => {

@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowed = ["image/webp"]; // solo webp
+  const allowed = ["image/webp"];
   if (allowed.includes(file.mimetype)) cb(null, true);
   else cb(new Error("Only WEBP images are allowed."));
 };
@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
 const uploadJobImage = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 300 * 1024 }, // 300KB (te sobra)
+  limits: { fileSize: 300 * 1024 },
 });
 
 module.exports = uploadJobImage;

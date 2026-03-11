@@ -9,6 +9,7 @@
       <form
         method="POST"
         action="<%= mode === 'edit' ? `/jobs/${job._id}/update` : '/jobs' %>"
+        enctype="multipart/form-data"
       >
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
 
@@ -40,23 +41,56 @@
 
         <div class="mb-3">
           <label class="form-label">Company Image URL (optional)</label>
-          <input class="form-control" name="imageUrl" value="<%= job.imageUrl || '' %>" placeholder="https://..." />
-          <div class="form-text">Use an image URL for the company logo or banner.</div>
+          <input
+            class="form-control"
+            name="imageUrl"
+            value="<%= job.imageUrl || '' %>"
+            placeholder="https://..."
+          />
+          <div class="form-text">
+            Use an image URL OR upload an image below.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Upload Company Image (optional)</label>
+          <input
+            class="form-control"
+            type="file"
+            name="image"
+            accept="image/*"
+          />
+          <div class="form-text">
+            If you upload a file, it will override the image URL.
+          </div>
         </div>
 
         <% if (mode === "edit") { %>
           <div class="mb-3">
             <div class="small text-muted mb-1">Current image:</div>
-            <% if (job.imageUrl) { %>
-              <img src="<%= job.imageUrl %>" class="img-fluid rounded" style="max-height: 160px; object-fit: cover;" />
+
+            <% if (job.imageFile) { %>
+              <img
+                src="/uploads/<%= job.imageFile %>"
+                class="img-fluid rounded"
+                style="max-height: 160px; object-fit: cover;"
+              />
+            <% } else if (job.imageUrl) { %>
+              <img
+                src="<%= job.imageUrl %>"
+                class="img-fluid rounded"
+                style="max-height: 160px; object-fit: cover;"
+              />
             <% } else { %>
               <div class="text-muted">No image set.</div>
             <% } %>
+
           </div>
         <% } %>
 
         <button class="btn btn-primary" type="submit">Save</button>
         <a class="btn btn-outline-secondary" href="/jobs">Cancel</a>
+
       </form>
     </div>
   </div>
